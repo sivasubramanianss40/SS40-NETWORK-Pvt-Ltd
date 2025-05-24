@@ -24,72 +24,47 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
- <!-- Inline Mobile Optimizations 
-  <style>
-    @media (max-width: 768px) {
-  /* Only hide visual/animated elements */
-  .hero-blob,
-  .floating-shape,
-  .gm-bg-animation,
-  .blurred-shape,
-  .blur-bg,
-  .star,
-  .spark {
-    display: none !important;
-  }
-
-  /* Disable AOS animations without hiding content */
-  .aos-animate {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-} -->
-
-
-
   </style>
     
     <style>
 
       @media (max-width: 768px) {
-  .hero-blob,
-  .floating-shape,
-  .gm-bg-animation,
-  .blurred-shape,
-  .blur-bg,
-  .star,
-  .spark,
-  .gm-bg-blob-1,
-  .gm-bg-blob-2,
-  .gm-bg-blob-3 {
-    display: none !important;
-  }
+        .hero-blob,
+        .floating-shape,
+        .gm-bg-animation,
+        .blurred-shape,
+        .blur-bg,
+        .star,
+        .spark,
+        .gm-bg-blob-1,
+        .gm-bg-blob-2,
+        .gm-bg-blob-3 {
+          display: none !important;
+        }
 
-  .aos-animate {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
+        .aos-animate {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
 
-@media (max-width: 768px) {
-  .navbar,
-  .contact-form,
-  .contact-info-card,
-  .gm-testimonial-card {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    background: rgba(0,0,0,0.5) !important;
-  }
-}
+      @media (max-width: 768px) {
+        .navbar,
+        .contact-form,
+        .contact-info-card,
+        .gm-testimonial-card {
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+          background: rgba(0,0,0,0.5) !important;
+        }
+      }
 
-@media (min-width: 769px) {
-  .card {
-    will-change: transform;
-    transform: translateZ(0);
-  }
-}
-
-
+      @media (min-width: 769px) {
+        .card {
+          will-change: transform;
+          transform: translateZ(0);
+        }
+      }
 
         /* Base Variables */
         :root {
@@ -280,51 +255,51 @@
 
 
           /* Responsive adjustments */
-    @media (max-width: 991px) {
-      .hero-title {
-        font-size: 8.75rem;
-      }
-      
-      .hero-subtitle {
-        font-size: 1.15rem;
-        padding: 0 15px;
-      }
-    }
-    
-    @media (max-width: 767px) {
-      .hero-section {
-        padding: 60px 15px;
-      }
-      
-      .hero-title {
-        font-size: 2.2rem;
-        margin-bottom: 1rem;
-      }
-      
-      .hero-subtitle {
-        font-size: 1.05rem;
-        line-height: 1.5;
-        padding: 0 10px;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .hero-section {
-        padding: 50px 15px;
-      }
-      
-      .hero-title {
-        font-size: 1.8rem;
-        margin-bottom: 0.8rem;
-        line-height: 1.3;
-      }
-      
-      .hero-subtitle {
-        font-size: 1rem;
-        line-height: 1.5;
-        padding: 0 5px;
-      }
-    }
+        @media (max-width: 991px) {
+          .hero-title {
+            font-size: 8.75rem;
+          }
+          
+          .hero-subtitle {
+            font-size: 1.15rem;
+            padding: 0 15px;
+          }
+        }
+        
+        @media (max-width: 767px) {
+          .hero-section {
+            padding: 60px 15px;
+          }
+          
+          .hero-title {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+          }
+          
+          .hero-subtitle {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            padding: 0 10px;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .hero-section {
+            padding: 50px 15px;
+          }
+          
+          .hero-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.3;
+          }
+          
+          .hero-subtitle {
+            font-size: 1rem;
+            line-height: 1.5;
+            padding: 0 5px;
+          }
+        }
 
         /* About Section */
         .parallax-bg {
@@ -838,55 +813,55 @@
 
         /* Mobile list view */
         .journey-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
 
-.journey-list li {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 16px 18px;
-  margin-bottom: 1.5rem;
-  color: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+        .journey-list li {
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 12px;
+          padding: 16px 18px;
+          margin-bottom: 1.5rem;
+          color: white;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-.journey-list li:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-}
+        .journey-list li:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        }
 
-.journey-list h5 {
-  font-size: 1.1rem;
-  margin-bottom: 0.4rem;
-  color: #ffffff;
-  line-height: 1.4;
-}
+        .journey-list h5 {
+          font-size: 1.1rem;
+          margin-bottom: 0.4rem;
+          color: #ffffff;
+          line-height: 1.4;
+        }
 
-.journey-list p {
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.85);
-  line-height: 1.6;
-}
+        .journey-list p {
+          font-size: 0.95rem;
+          color: rgba(255, 255, 255, 0.85);
+          line-height: 1.6;
+        }
 
-/* Extra mobile responsiveness */
-@media (max-width: 576px) {
-  .journey-list li {
-    padding: 14px 16px;
-    font-size: 0.9rem;
-  }
+        /* Extra mobile responsiveness */
+        @media (max-width: 576px) {
+          .journey-list li {
+            padding: 14px 16px;
+            font-size: 0.9rem;
+          }
 
-  .journey-list h5 {
-    font-size: 1rem;
-  }
+          .journey-list h5 {
+            font-size: 1rem;
+          }
 
-  .journey-list p {
-    font-size: 0.88rem;
-  }
-}
+          .journey-list p {
+            font-size: 0.88rem;
+          }
+        }
 
 
         /*--testimonial--*/
@@ -2434,7 +2409,7 @@
         </div>
         <div class="gm-testimonial-info">
           <h3>Mrs. Petchiammal</h3>
-          <p>Founder & CEO <br><span>Mom & Daughter Cosmatics</span></p>
+          <p>Founder & CEO <br><span>Mom & Daughter Cosmetics</span></p>
         </div>
       </div>
       <div class="gm-testimonial-rating">★★★★★</div>
@@ -2453,7 +2428,7 @@
         </div>
         <div class="gm-testimonial-info">
           <h3>Mr. Shiva</h3>
-          <p>Founder <br> <span>M2 Arts</span></p>
+          <p>Founder & CEO<br><span>M2 Arts</span></p>
         </div>
       </div>
       <div class="gm-testimonial-rating">★★★★★</div>
@@ -2984,39 +2959,6 @@
   <!-- Scripts (only Bootstrap for stability) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        
-    <!-- Custom JavaScript 
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-      const isMobile = window.innerWidth < 768;
-
-      // Conditionally disable AOS and heavy animations
-      AOS.init({ disable: isMobile });
-
-      if (!isMobile) {
-        // Safe to run GSAP/star animations only on desktop
-        const starsContainer = document.getElementById('stars-container');
-        if (starsContainer) {
-          for (let i = 0; i < 60; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            star.style.top = `${Math.random() * 100}%`;
-            star.style.left = `${Math.random() * 100}%`;
-            starsContainer.appendChild(star);
-          }
-
-          setInterval(() => {
-            const spark = document.createElement('div');
-            spark.classList.add('spark');
-            spark.style.top = `${Math.random() * 60 + 20}%`;
-            spark.style.left = `${Math.random() * 20 - 10}%`;
-            starsContainer.appendChild(spark);
-            setTimeout(() => spark.remove(), 2000);
-          }, 6000);
-        }
-      }
-    });
-    -->
 <script>
 if (window.innerWidth > 768) {
   AOS.init();
