@@ -27,6 +27,36 @@
   </style>
     
     <style>
+      .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 48px;
+      height: 48px;
+      font-size: 24px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      text-align: center;
+      line-height: 48px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1.1);
+    }
+
+
 
       @media (max-width: 768px) {
         .hero-blob,
@@ -3658,8 +3688,33 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.style.overflow = ""; // restore scrolling
     }
   }
-
-
     </script>
+    <script>
+    function scrollToTop() {
+      const heroSection = document.querySelector("#hero");
+      if (heroSection) {
+        heroSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+
+    document.addEventListener("scroll", () => {
+      const backToTop = document.getElementById("backToTop");
+
+      // Calculate if user is near the bottom (within 50px)
+      const nearBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 50;
+
+      if (nearBottom) {
+        backToTop.classList.add("show");
+      } else {
+        backToTop.classList.remove("show");
+      }
+    });
+    </script>
+
+
+
+    <!-- Scroll to Top Button -->
+    <div id="backToTop" class="back-to-top" onclick="scrollToTop()">↑</div>
+
 </body>
 </html>
