@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Permissions-Policy" content="unload=(self)">
 
-    <link rel="icon" type="image/png" sizes="64x64" href="https://ik.imagekit.io/iytjda5e4/UPDATED_SS40_LOGO(Only)-01.png?updatedAt=1747404373686">
-
-
+    <link rel="icon" type="image/png" sizes="64x64" href="UPDATED_SS40_LOGO _Recovered_.png">
     <title>SS40 NETWORK</title>
     <!-- Consolidated CSS Libraries -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -1659,6 +1657,12 @@
       width: 100%;
     }
 
+    #certNumber:focus {
+        /* Option 1: Minimal dark glow */
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        outline: none;
+        border-color: #555;
+    }
 
 
         /* Media Queries */
@@ -1767,7 +1771,7 @@
   <nav class="navbar navbar-expand-lg fixed-top py-3">
     <div class="container">
         <a class="navbar-brand" href="#hero">
-            <img src="https://ik.imagekit.io/iytjda5e4/UPDATED_SS40_LOGO(Only)-01.png?updatedAt=1747404373686" alt="Logo">
+            <img src="UPDATED_SS40_LOGO(Only)-01.png" alt="Logo">
             SS40 NETWORK
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -1830,7 +1834,7 @@
                 </div>
             </div>
             <div class="col-lg-6 d-none d-lg-block text-center">
-                <img src="https://ik.imagekit.io/iytjda5e4/UPDATED_SS40_LOGO-01.png?updatedAt=1747457582989" 
+                <img src="UPDATED_SS40_LOGO-01.png" 
                      alt="SS40 NETWORK Logo" 
                      class="img-fluid" 
                      style="max-width: 320px; height: auto; filter: drop-shadow(0 10px 30px rgba(0, 227, 174, 0.2)); animation: floatLogo 6s ease-in-out infinite;">
@@ -2488,7 +2492,186 @@
 </style>
     </section>
 
+<div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="certificateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+            <div class="modal-header" style="border-bottom: none; padding: 20px 20px 0;">
+                <h5 class="modal-title" id="certificateModalLabel" style="color: #333; font-weight: 600; font-size: 1.25rem;">Certificate Verification</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <div class="mb-3">
+                    <label for="certNumber" class="form-label" style="color: #333; font-size: 0.9rem; font-weight: 500;">Enter Certificate Number</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="certNumber" style="border-radius: 5px; font-size: 0.9rem; padding: 10px;" readonly>
+                    </div>
+                    <datalist id="certSuggestions"></datalist>
+                </div>
+                <button onclick="verifyCertificate()" class="btn btn-primary w-100" style="background: #007bff; border: none; border-radius: 5px; font-size: 0.9rem; padding: 10px;">Verify</button>
+                <div id="errorMessage" class="error-message" style="display: none; color: #dc3545; margin-top: 15px; text-align: center; font-size: 0.85rem;">Certificate not found. Please check the number and try again.</div>
+                <div id="resultCard" class="result-card" style="display: none; margin-top: 20px; padding: 15px; border: 1px solid #dee2e6; border-radius: 8px; background: #f8f9fa;">
+                    <h6 style="color: #333; font-weight: 600; font-size: 1rem; margin-bottom: 15px;">Certificate Details</h6>
+                    <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; font-size: 0.9rem; color: #333;">
+                        <strong style="font-weight: 500;">Name:</strong>
+                        <span id="certName" style="color: #555;"></span>
+                        <strong style="font-weight: 500;">Designation:</strong>
+                        <span id="certDesignation" style="color: #555;"></span>
+                        <strong style="font-weight: 500;">Domain:</strong>
+                        <span id="certDomain" style="color: #555;"></span>
+                        <strong style="font-weight: 500;">Mode:</strong>
+                        <span id="certMode" style="color: #555;"></span>
+                        <strong style="font-weight: 500;">Duration:</strong>
+                        <span id="certDuration" style="color: #555;"></span>
+                        <strong style="font-weight: 500;">Course Covered:</strong>
+                        <span id="certCourse" style="color: #555;"></span>
+                        <strong style="font-weight: 500;">Gain:</strong>
+                        <span id="certGain" style="color: #555;"></span>
+                    </div>
+                    <div id="successMessage" class="success-message" style="display: flex; align-items: center; justify-content: center; margin-top: 15px; color: #28a745; font-size: 0.85rem;">
+                        <svg style="width: 20px; height: 20px; margin-right: 8px;" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Certificate Verified Successfully
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+    // Sample certificate database
+    const certificates = {
+        'SS40DS01001': {
+            name: 'Abinaya P',
+            designation: 'Student at Thamirabharani Engineering College',
+            domain: 'Data Science',
+            mode: 'Online',
+            duration: '4 Weeks',
+            course: 'Full Stack Web Development',
+            gain: 'Fundamentals of DS & Hands-On Practice'
+        }
+    };
+
+    // Load previous certificate numbers from localStorage
+    function loadCertSuggestions() {
+        const suggestions = JSON.parse(localStorage.getItem('certHistory') || '[]');
+        const datalist = document.getElementById('certSuggestions');
+        datalist.innerHTML = '';
+        suggestions.forEach(cert => {
+            const option = document.createElement('option');
+            option.value = cert;
+            datalist.appendChild(option);
+        });
+    }
+
+    // Save certificate number to localStorage
+    function saveCertNumber(certNumber) {
+        const suggestions = JSON.parse(localStorage.getItem('certHistory') || '[]');
+        if (!suggestions.includes(certNumber)) {
+            suggestions.push(certNumber);
+            localStorage.setItem('certHistory', JSON.stringify(suggestions.slice(-1))); // Limit to last 5 entries
+        }
+        loadCertSuggestions();
+    }
+
+    // Toggle readonly state of input
+    function toggleInputReadonly() {
+        const certNumberInput = document.getElementById('certNumber');
+        certNumberInput.removeAttribute('readonly');
+        certNumberInput.focus();
+    }
+
+    function verifyCertificate() {
+        try {
+            const certNumberInput = document.getElementById('certNumber');
+            const certNumber = certNumberInput.value.trim().toUpperCase();
+            const resultCard = document.getElementById('resultCard');
+            const errorMessage = document.getElementById('errorMessage');
+            const certName = document.getElementById('certName');
+            const certDesignation = document.getElementById('certDesignation');
+            const certDomain = document.getElementById('certDomain');
+            const certMode = document.getElementById('certMode');
+            const certDuration = document.getElementById('certDuration');
+            const certCourse = document.getElementById('certCourse');
+            const certGain = document.getElementById('certGain');
+            const successMessage = document.getElementById('successMessage');
+
+            // Reset previous states
+            resultCard.style.display = 'none';
+            errorMessage.style.display = 'none';
+            certName.textContent = '';
+            certDesignation.textContent = '';
+            certDomain.textContent = '';
+            certMode.textContent = '';
+            certDuration.textContent = '';
+            certCourse.textContent = '';
+            certGain.textContent = '';
+            successMessage.style.display = 'none';
+
+            // Input validation
+            if (!certNumber) {
+                throw new Error('Please enter a certificate number');
+            }
+
+            // Check if certificate exists
+            if (certificates[certNumber]) {
+                const cert = certificates[certNumber];
+                certName.textContent = cert.name;
+                certDesignation.textContent = cert.designation;
+                certDomain.textContent = cert.domain;
+                certMode.textContent = cert.mode;
+                certDuration.textContent = cert.duration;
+                certCourse.textContent = cert.course;
+                certGain.textContent = cert.gain;
+                resultCard.style.display = 'block';
+                successMessage.style.display = 'flex';
+                saveCertNumber(certNumber); // Save valid certificate number
+                certNumberInput.setAttribute('readonly', 'readonly'); // Re-apply readonly after verification
+            } else {
+                errorMessage.style.display = 'block';
+            }
+        } catch (error) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = error.message;
+            errorMessage.style.display = 'block';
+        }
+    }
+
+    // Add enter key support
+    document.getElementById('certNumber').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            verifyCertificate();
+        }
+    });
+
+    // Allow editing on input click
+    document.getElementById('certNumber').addEventListener('click', function() {
+        toggleInputReadonly();
+    });
+
+    // Load suggestions when modal is opened
+    document.getElementById('certificateModal').addEventListener('shown.bs.modal', function () {
+        loadCertSuggestions();
+    });
+
+    // Clear input and results when modal is closed
+    document.getElementById('certificateModal').addEventListener('hidden.bs.modal', function () {
+        const certNumberInput = document.getElementById('certNumber');
+        certNumberInput.value = '';
+        certNumberInput.setAttribute('readonly', 'readonly');
+        document.getElementById('resultCard').style.display = 'none';
+        document.getElementById('errorMessage').style.display = 'none';
+        document.getElementById('certName').textContent = '';
+        document.getElementById('certDesignation').textContent = '';
+        document.getElementById('certDomain').textContent = '';
+        document.getElementById('certMode').textContent = '';
+        document.getElementById('certDuration').textContent = '';
+        document.getElementById('certCourse').textContent = '';
+        document.getElementById('certGain').textContent = '';
+        document.getElementById('successMessage').style.display = 'none';
+    });
+</script>
 
 <!-- Careers Modal -->
 <div class="modal fade" id="careersModal" tabindex="-1" aria-labelledby="careersModalLabel" aria-hidden="true">
@@ -2914,7 +3097,7 @@
           <!-- Logo Column -->
           <div class="col-lg-4 mb-4 mb-lg-0">
             <a href="#hero" class="d-flex align-items-center mb-4 text-white text-decoration-none footer-logo">
-              <img src="https://ik.imagekit.io/iytjda5e4/UPDATED_SS40_LOGO(Only)-01.png?updatedAt=1747404373686" alt="SS40 NETWORK Logo" style="height: 38px;">
+              <img src="UPDATED_SS40_LOGO(Only)-01.png" alt="SS40 NETWORK Logo" style="height: 38px;">
               <span class="ms-2 fw-semibold" style="font-size: 1.2rem; letter-spacing: 0.5px;">SS40 NETWORK</span>
             </a>
             <p class="text-white-50" style="line-height: 1.8; font-weight: 300;">Transforming ideas into digital success stories through innovative design, technology, and AI solutions.</p>
@@ -2963,15 +3146,35 @@
           <div class="col-md-6 text-center text-md-start">
             <p class="mb-0 copyright-text">&copy; 2025 SS40 NETWORK. All rights reserved.</p>
           </div>
-          <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
-            <a href="#" class="policy-link me-4">Privacy Policy</a>
-            <a href="#" class="policy-link">Terms of Service</a>
-          </div>
+        <div class="col-md-6 text-center text-md-end mt-3 mt-md-0 policy-links">
+            <a href="#" class="policy-link me-md-4">Privacy Policy</a>
+            <a href="#" class="policy-link me-md-4">Terms of Service</a>
+            <a href="#" class="policy-link" data-bs-toggle="modal" data-bs-target="#certificateModal">Verify Certificates</a>
+        </div>
         </div>
       </div>
     </div>
   </footer>
 </section>
+
+<style>
+    .policy-links {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+    @media (max-width: 576px) {
+        .policy-links {
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .policy-link {
+            margin-right: 0 !important;
+            font-size: 0.9rem;
+        }
+    }
+</style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
