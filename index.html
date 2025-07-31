@@ -2502,10 +2502,7 @@
             <div class="modal-body" style="padding: 20px;">
                 <div class="mb-3">
                     <label for="certNumber" class="form-label" style="color: #333; font-size: 0.9rem; font-weight: 500;">Enter Certificate Number</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="certNumber" style="border-radius: 5px; font-size: 0.9rem; padding: 10px;" readonly>
-                    </div>
-                    <datalist id="certSuggestions"></datalist>
+                    <input type="text" class="form-control" id="certNumber" style="border-radius: 5px; font-size: 0.9rem; padding: 10px;" readonly>
                 </div>
                 <button onclick="verifyCertificate()" class="btn btn-primary w-100" style="background: #007bff; border: none; border-radius: 5px; font-size: 0.9rem; padding: 10px;">Verify</button>
                 <div id="errorMessage" class="error-message" style="display: none; color: #dc3545; margin-top: 15px; text-align: center; font-size: 0.85rem;">Certificate not found. Please check the number and try again.</div>
@@ -2522,10 +2519,8 @@
                         <span id="certMode" style="color: #555;"></span>
                         <strong style="font-weight: 500;">Duration:</strong>
                         <span id="certDuration" style="color: #555;"></span>
-                        <strong style="font-weight: 500;">Course Covered:</strong>
-                        <span id="certCourse" style="color: #555;"></span>
-                        <strong style="font-weight: 500;">Gain:</strong>
-                        <span id="certGain" style="color: #555;"></span>
+                        <strong style="font-weight: 500;">Covered:</strong>
+                        <span id="certCovered" style="color: #555;"></span>
                     </div>
                     <div id="successMessage" class="success-message" style="display: flex; align-items: center; justify-content: center; margin-top: 15px; color: #28a745; font-size: 0.85rem;">
                         <svg style="width: 20px; height: 20px; margin-right: 8px;" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2548,39 +2543,9 @@
             domain: 'Data Science',
             mode: 'Online',
             duration: '4 Weeks',
-            course: 'Full Stack Web Development',
-            gain: 'Fundamentals of DS & Hands-On Practice'
+            covered: 'Fundamentals of DS & Hands-On Practice'
         }
     };
-
-    // Load previous certificate numbers from localStorage
-    function loadCertSuggestions() {
-        const suggestions = JSON.parse(localStorage.getItem('certHistory') || '[]');
-        const datalist = document.getElementById('certSuggestions');
-        datalist.innerHTML = '';
-        suggestions.forEach(cert => {
-            const option = document.createElement('option');
-            option.value = cert;
-            datalist.appendChild(option);
-        });
-    }
-
-    // Save certificate number to localStorage
-    function saveCertNumber(certNumber) {
-        const suggestions = JSON.parse(localStorage.getItem('certHistory') || '[]');
-        if (!suggestions.includes(certNumber)) {
-            suggestions.push(certNumber);
-            localStorage.setItem('certHistory', JSON.stringify(suggestions.slice(-1))); // Limit to last 5 entries
-        }
-        loadCertSuggestions();
-    }
-
-    // Toggle readonly state of input
-    function toggleInputReadonly() {
-        const certNumberInput = document.getElementById('certNumber');
-        certNumberInput.removeAttribute('readonly');
-        certNumberInput.focus();
-    }
 
     function verifyCertificate() {
         try {
@@ -2593,8 +2558,7 @@
             const certDomain = document.getElementById('certDomain');
             const certMode = document.getElementById('certMode');
             const certDuration = document.getElementById('certDuration');
-            const certCourse = document.getElementById('certCourse');
-            const certGain = document.getElementById('certGain');
+            const certCovered = document.getElementById('certCovered');
             const successMessage = document.getElementById('successMessage');
 
             // Reset previous states
@@ -2605,8 +2569,7 @@
             certDomain.textContent = '';
             certMode.textContent = '';
             certDuration.textContent = '';
-            certCourse.textContent = '';
-            certGain.textContent = '';
+            certCovered.textContent = '';
             successMessage.style.display = 'none';
 
             // Input validation
@@ -2622,21 +2585,32 @@
                 certDomain.textContent = cert.domain;
                 certMode.textContent = cert.mode;
                 certDuration.textContent = cert.duration;
-                certCourse.textContent = cert.course;
-                certGain.textContent = cert.gain;
+                certCovered.textContent = cert.covered;
                 resultCard.style.display = 'block';
                 successMessage.style.display = 'flex';
-                saveCertNumber(certNumber); // Save valid certificate number
-                certNumberInput.setAttribute('readonly', 'readonly'); // Re-apply readonly after verification
+                certNumberInput.setAttribute('readonly', ''); // Reapply readonly after verification
             } else {
                 errorMessage.style.display = 'block';
+                certNumberInput.setAttribute('readonly', ''); // Reapply readonly on error
             }
         } catch (error) {
             const errorMessage = document.getElementById('errorMessage');
             errorMessage.textContent = error.message;
             errorMessage.style.display = 'block';
+            document.getElementById('certNumber').setAttribute('readonly', ''); // Reapply readonly on exception
         }
     }
+
+    // Enable input on single-click
+    document.getElementById('certNumber').addEventListener('click', function() {
+        this.removeAttribute('readonly');
+        this.focus();
+    });
+
+    // Reapply readonly on blur
+    document.getElementById('certNumber').addEventListener('blur', function() {
+        this.setAttribute('readonly', '');
+    });
 
     // Add enter key support
     document.getElementById('certNumber').addEventListener('keypress', function(event) {
@@ -2645,21 +2619,11 @@
         }
     });
 
-    // Allow editing on input click
-    document.getElementById('certNumber').addEventListener('click', function() {
-        toggleInputReadonly();
-    });
-
-    // Load suggestions when modal is opened
-    document.getElementById('certificateModal').addEventListener('shown.bs.modal', function () {
-        loadCertSuggestions();
-    });
-
     // Clear input and results when modal is closed
     document.getElementById('certificateModal').addEventListener('hidden.bs.modal', function () {
         const certNumberInput = document.getElementById('certNumber');
         certNumberInput.value = '';
-        certNumberInput.setAttribute('readonly', 'readonly');
+        certNumberInput.setAttribute('readonly', '');
         document.getElementById('resultCard').style.display = 'none';
         document.getElementById('errorMessage').style.display = 'none';
         document.getElementById('certName').textContent = '';
@@ -2667,12 +2631,10 @@
         document.getElementById('certDomain').textContent = '';
         document.getElementById('certMode').textContent = '';
         document.getElementById('certDuration').textContent = '';
-        document.getElementById('certCourse').textContent = '';
-        document.getElementById('certGain').textContent = '';
+        document.getElementById('certCovered').textContent = '';
         document.getElementById('successMessage').style.display = 'none';
     });
 </script>
-
 <!-- Careers Modal -->
 <div class="modal fade" id="careersModal" tabindex="-1" aria-labelledby="careersModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
