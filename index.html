@@ -414,8 +414,8 @@ section {
     bottom: 25px;
     right: 25px;
     z-index: 1000;
-    width: 30px;
-    height: 40px;
+    width: 40px;
+    height: 45px;
     line-height: 50px;
     text-align: center;
     font-size: 1.5rem;
@@ -424,7 +424,7 @@ section {
     background-color: var(--color-accent);
     color: var(--color-bg-light);
     border: 1px solid var(--color-accent);
-    border-radius: 45%;
+    border-radius: 60%;
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
@@ -453,7 +453,33 @@ section {
     border-radius: 0 !important;
     border: 1px solid #e0e0e0;
 }
+@media (max-width: 768px) {
+  #about [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
 
+@media (max-width: 768px) {
+  #hero [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+   #mobti{
+    margin-left:7%;
+    }
+}
+
+@media (min-width: 768px) {
+   #mobti{
+    margin-left:3%;
+    }
+}
 /* Responsive Design */
 @media (max-width: 991.98px) {
     #hero { 
@@ -743,7 +769,7 @@ section {
                 </div>
             </div>
 
-            <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="300">
+            <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="200">
                 <a href="#contact" class="btn btn-primary-bw px-4 py-2">Discuss Your Project <i class="fas fa-arrow-right ms-2"></i></a>
             </div>
         </div>
@@ -752,7 +778,7 @@ section {
     <section id="growth">
         <div class="container py-5">
             <div class="text-center">
-                <h2 class="section-title mb-5">Our Growth</h2>
+                <h2 class="section-title mb-5" data-aos="fade-up" data-aos-delay="100">Our Growth</h2>
             </div>
             
             <div class="counter-container">
@@ -820,27 +846,27 @@ section {
 
     <section id="journey">
         <div class="container">
-            <h3 class="text-center section-title mb-5">Our Journey</h3> 
+            <h3 class="text-center section-title mb-5" data-aos="fade-up" data-aos-delay="50">Our Journey</h3> 
             <div class="mobile-journey">
                 <ul class="journey-list list-unstyled">
                     <li class="mb-4" data-aos="fade-up">
                         <div class="mobile-timeline-dot"></div>
-                        <h5 class="fw-bold" style="margin-left:3%;">Sep 29, 2023 – Humble Inaugural</h5>
+                        <h5 class="fw-bold" id="mobti">Sep 29, 2023 – Humble Inaugural</h5>
                         <p>Marked the official launch of SS40 NETWORK, driven by a mission to deliver high-quality and affordable digital solutions.</p>
                     </li>
                     <li class="mb-4" data-aos="fade-up" data-aos-delay="100">
                         <div class="mobile-timeline-dot"></div>
-                        <h5 class="fw-bold" style="margin-left:3%;">Sep 30, 2023 – Central Government Approval</h5>
+                        <h5 class="fw-bold" id="mobti">Sep 30, 2023 – Central Government Approval</h5>
                         <p>Earned formal recognition from the Central Government, validating our vision and operational foundation.</p>
                     </li>
                     <li class="mb-4" data-aos="fade-up" data-aos-delay="200">
                         <div class="mobile-timeline-dot"></div>
-                        <h5 class="fw-bold" style="margin-left:3%;">Mar 11, 2024 – First Client Acquired</h5>
+                        <h5 class="fw-bold" id="mobti">Mar 11, 2024 – First Client Acquired</h5>
                         <p>Welcomed our first client, setting the stage for consistent growth and successful project delivery.</p>
                     </li>
                     <li class="mb-4" data-aos="fade-up" data-aos-delay="300">
                         <div class="mobile-timeline-dot"></div>
-                        <h5 class="fw-bold" style="margin-left:3%;">May 2025 – Government-Funded AI Medical Project</h5>
+                        <h5 class="fw-bold" id="mobti">May 2025 – Government-Funded AI Medical Project</h5>
                         <p>Completed a groundbreaking AI-powered medical project backed by the State Government, showcasing our innovative capabilities.</p>
                     </li>
                 </ul>
