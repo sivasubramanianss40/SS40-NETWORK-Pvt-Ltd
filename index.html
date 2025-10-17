@@ -352,38 +352,34 @@ section {
 }
 
 /* Testimonials */
-.gm-testimonials {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+.gm-testimonials-scroll {
+    display: flex;
     gap: 30px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 1rem;
 }
-
+.gm-testimonials-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+.gm-testimonials-scroll::-webkit-scrollbar-thumb {
+    background: var(--color-accent);
+    border-radius: 4px;
+}
+.gm-testimonials-scroll::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
 .gm-testimonial-card {
+    flex: 0 0 300px;
     background: var(--color-bg-light);
     border: 1px solid #e0e0e0;
     border-radius: 0;
     padding: 2rem;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, transform 0.2s ease;
 }
-
 .gm-testimonial-card:hover {
     border-color: var(--color-accent);
     transform: translateY(-1px);
-}
-
-.gm-testimonial-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-right: 15px;
-    border: 2px solid var(--color-accent);
-}
-
-.gm-testimonial-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 }
 
 /* Footer */
@@ -887,57 +883,53 @@ section {
     </section>
 
     <section id="testimonials">
-        <div class="container" data-aos="fade-up">
-            <header class="text-center mb-5">
-                <h2 class="section-title">What Our Clients Say</h2>
-                <p class="mx-auto" style="max-width: 600px; color: #555;">Discover how our solutions have transformed businesses and delighted customers.</p>
-            </header>
-            
-            <div class="gm-testimonials">
-                <div class="gm-testimonial-card" data-aos="fade-up">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="gm-testimonial-avatar">
-                            <img src="https://ik.imagekit.io/iytjda5e4/Screenshot_2025-05-20-20-17-39-468_com.linkedin.android.png?updatedAt=1747752970138" alt="Mr. Rajul Raj" width="60" height="60" loading="lazy">
-                        </div>
-                        <div class="ms-3">
-                            <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0;">Mr. Rajul Raj</h3>
-                            <p style="font-size: 0.9rem; color: #555; margin: 0;">Founder & CEO <br><span style="font-weight: 600; color: var(--color-accent);">Muthumani Pickles</span></p>
-                        </div>
-                    </div>
-                    <div style="color: var(--color-accent); font-size: 1.2rem; margin-bottom: 1rem;">★★★★★</div>
-                    <p>You're one of the most promising young entrepreneurs I've ever come across. Your dedication and innovative thinking truly reflect in your work. Thank you for delivering high-quality solutions at such affordable prices.</p>
-                </div>
+    <div class="container" data-aos="fade-up">
+        <header class="text-center mb-5">
+            <h2 class="section-title">What Our Clients Say</h2>
+            <p class="mx-auto" style="max-width: 600px; color: #555;">
+                Discover how our solutions have transformed businesses and delighted customers.
+            </p>
+        </header>
 
-                <div class="gm-testimonial-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="gm-testimonial-avatar">
-                            <img src="https://ik.imagekit.io/iytjda5e4/Petchi%20mam_updated_01_090411.png?updatedAt=1747752970742" alt="Mrs. Petchiammal" width="60" height="60" loading="lazy">
-                        </div>
-                        <div class="ms-3">
-                            <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0;">Mrs. Petchiammal</h3>
-                            <p style="font-size: 0.9rem; color: #555; margin: 0;">Founder & CEO <br><span style="font-weight: 600; color: var(--color-accent);">Mom & Daughter Cosmetics</span></p>
-                        </div>
-                    </div>
-                    <div style="color: var(--color-accent); font-size: 1.2rem; margin-bottom: 1rem;">★★★★★</div>
-                    <p>The transformation of our brand before and after partnering with SS40 NETWORK has been nothing short of phenomenal. Everything progressed so quickly and beautifully. Thank you for your unwavering commitment.</p>
-                </div>
+        <div class="gm-testimonials-scroll">
+            <div class="gm-testimonial-card" data-aos="fade-up">
+                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Mr. Rajul Raj</h3>
+                <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+                    Founder & CEO<br>
+                    <span style="font-weight: 600; color: var(--color-accent);">Muthumani Pickles</span>
+                </p>
+                <div style="color: var(--color-accent); font-size: 1.2rem; margin-bottom: 1rem;">★★★★★</div>
+                <p>
+                    You're one of the most promising young entrepreneurs I've ever come across. Your dedication and innovative thinking truly reflect in your work. Thank you for delivering high-quality solutions at such affordable prices.
+                </p>
+            </div>
 
-                <div class="gm-testimonial-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="gm-testimonial-avatar">
-                            <img src="https://ik.imagekit.io/iytjda5e4/Screenshot_2025-05-20-20-22-21-884_com.whatsapp.png?updatedAt=1747752970040" alt="Mr. Shiva" width="60" height="60" loading="lazy">
-                        </div>
-                        <div class="ms-3">
-                            <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0;">Mr. Shiva</h3>
-                            <p style="font-size: 0.9rem; color: #555; margin: 0;">Founder & CEO<br><span style="font-weight: 600; color: var(--color-accent);">M2 Arts</span></p>
-                        </div>
-                    </div>
-                    <div style="color: var(--color-accent); font-size: 1.2rem; margin-bottom: 1rem;">★★★★★</div>
-                    <p>Your creative vision and design thinking left a lasting impression on me. The way you brought life and meaning to our brand visuals was truly remarkable. Thank you for crafting such a unique brand identity.</p>
-                </div>
+            <div class="gm-testimonial-card" data-aos="fade-up" data-aos-delay="100">
+                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Mrs. Petchiammal</h3>
+                <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+                    Founder & CEO<br>
+                    <span style="font-weight: 600; color: var(--color-accent);">Mom & Daughter Cosmetics</span>
+                </p>
+                <div style="color: var(--color-accent); font-size: 1.2rem; margin-bottom: 1rem;">★★★★★</div>
+                <p>
+                    The transformation of our brand before and after partnering with SS40 NETWORK has been nothing short of phenomenal. Everything progressed so quickly and beautifully. Thank you for your unwavering commitment.
+                </p>
+            </div>
+
+            <div class="gm-testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Mr. Shiva</h3>
+                <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+                    Founder & CEO<br>
+                    <span style="font-weight: 600; color: var(--color-accent);">M2 Arts</span>
+                </p>
+                <div style="color: var(--color-accent); font-size: 1.2rem; margin-bottom: 1rem;">★★★★★</div>
+                <p>
+                    Your creative vision and design thinking left a lasting impression on me. The way you brought life and meaning to our brand visuals was truly remarkable. Thank you for crafting such a unique brand identity.
+                </p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <section id="contact">
         <div class="container" style="max-width: 1140px;">
