@@ -353,33 +353,116 @@ section {
 
 /* Testimonials */
 .gm-testimonials-scroll {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.gm-testimonials-inner {
+    --card-width: 300px;
+    --gap: 30px;
+    --num: 3;
+    --duration: 30s;
     display: flex;
-    gap: 30px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    padding-bottom: 1rem;
+    gap: var(--gap);
+    animation: scroll-left var(--duration) linear infinite;
 }
-.gm-testimonials-scroll::-webkit-scrollbar {
-    height: 8px;
+
+@keyframes scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX( calc( -1 * var(--num) * (var(--card-width) + var(--gap)) ) );
+    }
 }
-.gm-testimonials-scroll::-webkit-scrollbar-thumb {
-    background: var(--color-accent);
-    border-radius: 4px;
-}
-.gm-testimonials-scroll::-webkit-scrollbar-track {
-    background: #f0f0f0;
-}
+
 .gm-testimonial-card {
-    flex: 0 0 300px;
+    flex: 0 0 var(--card-width);
     background: var(--color-bg-light);
     border: 1px solid #e0e0e0;
     border-radius: 0;
     padding: 2rem;
     transition: border-color 0.2s ease, transform 0.2s ease;
+    box-sizing: border-box;
 }
+
 .gm-testimonial-card:hover {
     border-color: var(--color-accent);
     transform: translateY(-1px);
+}
+
+.gm-testimonials-scroll:hover .gm-testimonials-inner {
+    animation-play-state: paused;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .gm-testimonials-inner {
+        --card-width: 280px;
+        --gap: 20px;
+        --duration: 10s;
+    }
+
+    .gm-testimonial-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .gm-testimonials-inner {
+        --card-width: 250px;
+        --gap: 15px;
+        --duration: 10s;
+    }
+
+    .gm-testimonial-card h3 {
+        font-size: 1rem;
+    }
+
+    .gm-testimonial-card p {
+        font-size: 0.85rem;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .gm-testimonials-scroll {
+        flex-direction: column;
+        overflow-x: hidden;
+        gap: 20px;
+        padding-bottom: 0;
+    }
+
+    .gm-testimonial-card {
+        flex: none;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Hide scrollbar on mobile for cleaner look */
+    .gm-testimonials-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    .gm-testimonials-scroll {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+}
+
+@media (max-width: 480px) {
+    .gm-testimonial-card {
+        padding: 1.5rem;
+    }
+
+    .gm-testimonial-card h3 {
+        font-size: 1rem;
+    }
+
+    .gm-testimonial-card p {
+        font-size: 0.85rem;
+    }
 }
 
 /* Footer */
@@ -892,45 +975,83 @@ section {
         </header>
 
         <div class="gm-testimonials-scroll">
-            <div class="gm-testimonial-card" data-aos="fade-up">
-                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Mr. Rajul Raj</h3>
-                <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
-                    Founder & CEO<br>
-                    <span style="font-weight: 600; color: var(--color-accent);">Muthumani Pickles</span>
-                </p>
-                <div style="color: var(--color-accent); font-size: 1.2rem; margin-bottom: 1rem;">★★★★★</div>
-                <p>
-                    You're one of the most promising young entrepreneurs I've ever come across. Your dedication and innovative thinking truly reflect in your work. Thank you for delivering high-quality solutions at such affordable prices.
-                </p>
-            </div>
+            <div class="gm-testimonials-inner">
+                <div class="gm-testimonial-card" data-aos="fade-up">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Mr. Rajul Raj</h3>
+                    <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+                        Founder & CEO<br>
+                        <span style="font-weight: 600; color: var(--color-accent);">Muthumani Pickles</span>
+                    </p>
+                    <div style="color: var(--color-accent); font-size: 1.2rem; margin-bottom: 1rem;">★★★★★</div>
+                    <p>
+                        You're one of the most promising young entrepreneurs I've ever come across. Your dedication and innovative thinking truly reflect in your work. Thank you for delivering high-quality solutions at such affordable prices.
+                    </p>
+                </div>
 
-            <div class="gm-testimonial-card" data-aos="fade-up" data-aos-delay="100">
-                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Mrs. Petchiammal</h3>
-                <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
-                    Founder & CEO<br>
-                    <span style="font-weight: 600; color: var(--color-accent);">Mom & Daughter Cosmetics</span>
-                </p>
-                <div style="color: var(--color-accent); font-size: 1.2rem; margin-bottom: 1rem;">★★★★★</div>
-                <p>
-                    The transformation of our brand before and after partnering with SS40 NETWORK has been nothing short of phenomenal. Everything progressed so quickly and beautifully. Thank you for your unwavering commitment.
-                </p>
-            </div>
+                <div class="gm-testimonial-card" data-aos="fade-up" data-aos-delay="100">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Mrs. Petchiammal</h3>
+                    <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+                        Founder & CEO<br>
+                        <span style="font-weight: 600; color: var(--color-accent);">Mom & Daughter Cosmetics</span>
+                    </p>
+                    <div style="color: var(--color-accent); font-size: 1.2rem; margin-bottom: 1rem;">★★★★★</div>
+                    <p>
+                        The transformation of our brand before and after partnering with SS40 NETWORK has been nothing short of phenomenal. Everything progressed so quickly and beautifully. Thank you for your unwavering commitment.
+                    </p>
+                </div>
 
-            <div class="gm-testimonial-card" data-aos="fade-up" data-aos-delay="200">
-                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Mr. Shiva</h3>
-                <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
-                    Founder & CEO<br>
-                    <span style="font-weight: 600; color: var(--color-accent);">M2 Arts</span>
-                </p>
-                <div style="color: var(--color-accent); font-size: 1.2rem; margin-bottom: 1rem;">★★★★★</div>
-                <p>
-                    Your creative vision and design thinking left a lasting impression on me. The way you brought life and meaning to our brand visuals was truly remarkable. Thank you for crafting such a unique brand identity.
-                </p>
+                <div class="gm-testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Mr. Shiva</h3>
+                    <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+                        Founder & CEO<br>
+                        <span style="font-weight: 600; color: var(--color-accent);">M2 Arts</span>
+                    </p>
+                    <div style="color: var(--color-accent); font-size: 1.2rem; margin-bottom: 1rem;">★★★★★</div>
+                    <p>
+                        Your creative vision and design thinking left a lasting impression on me. The way you brought life and meaning to our brand visuals was truly remarkable. Thank you for crafting such a unique brand identity.
+                    </p>
+                </div>
+
+                <!-- Duplicated for infinite scroll -->
+                <div class="gm-testimonial-card" data-aos="fade-up">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Mr. Rajul Raj</h3>
+                    <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+                        Founder & CEO<br>
+                        <span style="font-weight: 600; color: var(--color-accent);">Muthumani Pickles</span>
+                    </p>
+                    <div style="color: var(--color-accent); font-size: 1.2rem; margin-bottom: 1rem;">★★★★★</div>
+                    <p>
+                        You're one of the most promising young entrepreneurs I've ever come across. Your dedication and innovative thinking truly reflect in your work. Thank you for delivering high-quality solutions at such affordable prices.
+                    </p>
+                </div>
+
+                <div class="gm-testimonial-card" data-aos="fade-up" data-aos-delay="100">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Mrs. Petchiammal</h3>
+                    <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+                        Founder & CEO<br>
+                        <span style="font-weight: 600; color: var(--color-accent);">Mom & Daughter Cosmetics</span>
+                    </p>
+                    <div style="color: var(--color-accent); font-size: 1.2rem; margin-bottom: 1rem;">★★★★★</div>
+                    <p>
+                        The transformation of our brand before and after partnering with SS40 NETWORK has been nothing short of phenomenal. Everything progressed so quickly and beautifully. Thank you for your unwavering commitment.
+                    </p>
+                </div>
+
+                <div class="gm-testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Mr. Shiva</h3>
+                    <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+                        Founder & CEO<br>
+                        <span style="font-weight: 600; color: var(--color-accent);">M2 Arts</span>
+                    </p>
+                    <div style="color: var(--color-accent); font-size: 1.2rem; margin-bottom: 1rem;">★★★★★</div>
+                    <p>
+                        Your creative vision and design thinking left a lasting impression on me. The way you brought life and meaning to our brand visuals was truly remarkable. Thank you for crafting such a unique brand identity.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </section>
-
     <section id="contact">
         <div class="container" style="max-width: 1140px;">
             <div class="text-center mb-5" data-aos="fade-up">
@@ -1019,6 +1140,7 @@ section {
                             <li><a href="#services" class="text-decoration-none" style="color: #555; transition: color 0.2s;">Services</a></li>
                             <li><a href="#growth" class="text-decoration-none" style="color: #555; transition: color 0.2s;">Growth</a></li>
                             <li><a href="#" class="text-decoration-none" style="color: #555; transition: color 0.2s;" data-bs-toggle="modal" data-bs-target="#careersModal">Careers</a></li>
+                            <li><a href="#" class="text-decoration-none" style="color: #555; font-size: 0.9rem;" data-bs-toggle="modal" data-bs-target="#certificateModal">Verify Certificates</a></li>
                         </ul>
                     </div>
                     
@@ -1049,7 +1171,6 @@ section {
                     <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
                         <a href="#" class="text-decoration-none me-4" style="color: #555; font-size: 0.9rem;">Privacy Policy</a>
                         <a href="#" class="text-decoration-none me-4" style="color: #555; font-size: 0.9rem;">Terms of Service</a>
-                        <a href="#" class="text-decoration-none" style="color: #555; font-size: 0.9rem;" data-bs-toggle="modal" data-bs-target="#certificateModal">Verify Certificates</a>
                     </div>
                 </div>
             </div>
