@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SS40 Network - Employee Onboarding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: #f5f5f5;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid #333;
+            padding-bottom: 20px;
+        }
+
+        .header-left h1 {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            color: #fff;
+        }
+
+        .header-left p {
+            font-size: 11px;
+            color: #999;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
+        .progress-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .progress-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 2px;
+            background: #222;
+            border-radius: 1px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #fff;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            font-size: 11px;
+            color: #888;
+            font-weight: 500;
+        }
+
+        .content-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .content-area.full {
+            grid-template-columns: 1fr;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .panel {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 24px;
+            border-radius: 3px;
+        }
+
+        .panel-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #333;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            color: #ccc;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"] {
+            width: 100%;
+            background: #111;
+            color: #f5f5f5;
+            border: 1px solid #444;
+            padding: 9px 11px;
+            font-family: inherit;
+            font-size: 13px;
+            border-radius: 3px;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #666;
+            background: #0a0a0a;
+        }
+
+        .file-upload {
+            background: #111;
+            border: 2px dashed #444;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 3px;
+            margin: 16px 0;
+        }
+
+        .file-upload:hover {
+            border-color: #666;
+            background: #161616;
+        }
+
+        .file-upload.active {
+            border-color: #888;
+            background: #1a1a1a;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: #666;
+        }
+
+        .upload-text {
+            font-size: 12px;
+            color: #888;
+            font-weight: 400;
+        }
+
+        .upload-status {
+            font-size: 11px;
+            color: #aaa;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .status-message {
+            padding: 12px;
+            margin: 16px 0;
+            border-left: 2px solid #444;
+            background: #111;
+            font-size: 12px;
+            border-radius: 2px;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .status-message.success {
+            border-left-color: #888;
+            background: #161616;
+            color: #ddd;
+        }
+
+        .status-message.error {
+            border-left-color: #555;
+            background: #1a0a0a;
+            color: #999;
+        }
+
+        .pdf-viewer {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .pdf-canvas-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0a0a0a;
+            padding: 20px;
+            min-height: 500px;
+        }
+
+        #pdfCanvas, #pdfCanvasPhoto, #pdfCanvasSign {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        .canvas-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-info {
+            text-align: center;
+            font-size: 10px;
+            color: #777;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .pdf-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #161616;
+            border-top: 1px solid #333;
+            gap: 12px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        button {
+            background: #333;
+            color: #f5f5f5;
+            border: 1px solid #555;
+            padding: 9px 14px;
+            font-family: inherit;
+            font-size: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        button:hover:not(:disabled) {
+            background: #444;
+            border-color: #666;
+        }
+
+        button:disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+        }
+
+        button.secondary {
+            background: #222;
+            color: #ccc;
+            border-color: #444;
+        }
+
+        button.secondary:hover:not(:disabled) {
+            background: #333;
+            border-color: #555;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .button-group.full {
+            grid-template-columns: 1fr;
+        }
+
+        .indicator {
+            position: absolute;
+            border: 2px solid #333;
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: #999;
+            font-weight: 600;
+            z-index: 10;
+            cursor: move;
+            letter-spacing: 0.3px;
+            transition: all 0.1s;
+        }
+
+        .indicator:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #555;
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loader.active {
+            display: block;
+        }
+
+        .loader-spinner {
+            border: 2px solid #222;
+            border-top: 2px solid #888;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            font-size: 12px;
+            color: #777;
+            font-weight: 500;
+        }
+
+        .welcome-screen {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .welcome-screen.active {
+            display: block;
+        }
+
+        .welcome-screen h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: 0.3px;
+            color: #fff;
+        }
+
+        .welcome-message {
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #bbb;
+        }
+
+        .welcome-status {
+            padding: 16px 20px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 3px;
+            font-size: 12px;
+            color: #999;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .instruction {
+            background: #111;
+            border-left: 2px solid #444;
+            padding: 11px;
+            margin: 16px 0;
+            font-size: 11px;
+            line-height: 1.5;
+            border-radius: 2px;
+            color: #aaa;
+        }
+
+        @media (max-width: 950px) {
+            .content-area {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .progress-section {
+                align-items: flex-start;
+            }
+
+            .progress-bar {
+                width: 150px;
+            }
+
+            .pdf-canvas-wrapper {
+                min-height: 400px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 16px;
+            }
+
+            .header-left h1 {
+                font-size: 16px;
+            }
+
+            .panel {
+                padding: 16px;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            .file-upload {
+                padding: 16px;
+            }
+
+            .pdf-canvas-wrapper {
+                min-height: 300px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <h1>SS40 NETWORK</h1>
+                <p>Employee Onboarding System</p>
+            </div>
+            <div class="progress-section">
+                <div class="progress-label">Overall Progress</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text"><span id="progressPercent">0</span>%</div>
+            </div>
+        </header>
+
+        <!-- Step 1: Personal Details -->
+        <div class="section active" id="step1">
+            <div class="content-area full">
+                <div class="panel">
+                    <div class="panel-title">Step 1 of 4: Personal Information</div>
+                    
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="employeeName" placeholder="Enter your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" id="employeeDob">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="employeeEmail" placeholder="your.email@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mobile Number</label>
+                        <input type="tel" id="employeeMobile" placeholder="+1234567890">
+                    </div>
+
+                    <div class="button-group full">
+                        <button onclick="app.goToStep2()">Continue to NDA</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: NDA Upload -->
+        <div class="section" id="step2">
+            <div class="content-area">
+                <div class="panel">
+                    <div class="panel-title">Step 2 of 4: Upload NDA Document</div>
+                    
+                    <div class="instruction">Upload the NDA document sent to your email</div>
+
+                    <div class="file-upload" id="ndaUpload" onclick="document.getElementById('ndaFile').click()">
+                        <input type="file" id="ndaFile" accept="application/pdf" onchange="app.handleNdaUpload(event)">
+                        <div class="upload-icon">▲</div>
+                        <div class="upload-text">Click to upload NDA PDF</div>
+                        <div class="upload-status" id="ndaStatus"></div>
+                    </div>
+
+                    <div class="status-message" id="ndaStatusMsg"></div>
+
+                    <div class="button-group full">
+                        <button class="secondary" onclick="app.goToStep1()">Back</button>
+                        <button id="continueToPhoto" disabled onclick="app.goToStep3()">Continue to Photo</button>
+                    </div>
+                </div>
+
+                <div class="pdf-viewer">
+                    <div class="pdf-canvas-wrapper" id="pdfCanvasContainer" style="display:none;">
+                        <div class="canvas-wrapper" id="canvasWrapper">
+                            <canvas id="pdfCanvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="pdf-controls" id="pdfControls" style="display:none;">
+                        <div class="page-info" id="pageInfo"></div>
+                        <div class="control-buttons">
+                            <button class="secondary" onclick="app.changePage(-1)" id="prevBtn">Previous</button>
+                            <button class="secondary" onclick="app.changePage(1)" id="nextBtn">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Photo Upload -->
+        <div class="section" id="step3">
+            <div class="content-area">
+                <div class="panel">
+                    <div class="panel-title">Step 3 of 4: Upload Profile Photo</div>
+                    
+                    <div class="instruction">Upload profile photo, then click on the PDF to place it. Drag to reposition.</div>
+
+                    <div class="file-upload" id="photoUpload" onclick="document.getElementById('photoFile').click()">
+                        <input type="file" id="photoFile" accept="image/png,image/jpeg" onchange="app.handlePhotoUpload(event)">
+                        <div class="upload-icon">▲</div>
+                        <div class="upload-text">Click to upload profile photo</div>
+                        <div class="upload-status" id="photoStatus"></div>
+                    </div>
+
+                    <div class="status-message" id="photoStatusMsg"></div>
+
+                    <div class="button-group full">
+                        <button class="secondary" onclick="app.goToStep2()">Back</button>
+                        <button id="continueToSign" disabled onclick="app.goToStep4()">Continue to Signature</button>
+                    </div>
+                </div>
+
+                <div class="pdf-viewer">
+                    <div class="pdf-canvas-wrapper" id="pdfCanvasContainerPhoto" style="display:none;">
+                        <div class="canvas-wrapper" id="canvasWrapperPhoto">
+                            <canvas id="pdfCanvasPhoto"></canvas>
+                        </div>
+                    </div>
+                    <div class="pdf-controls" id="pdfControlsPhoto" style="display:none;">
+                        <div class="page-info" id="pageInfoPhoto"></div>
+                        <div class="control-buttons">
+                            <button class="secondary" onclick="app.changePage(-1, 'photo')" id="prevBtnPhoto">Previous</button>
+                            <button class="secondary" onclick="app.changePage(1, 'photo')" id="nextBtnPhoto">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Signature Upload -->
+        <div class="section" id="step4">
+            <div class="content-area">
+                <div class="panel">
+                    <div class="panel-title">Step 4 of 4: Upload Signature</div>
+                    
+                    <div class="instruction">Upload signature, then click on PDF multiple times to place it. Drag to reposition.</div>
+
+                    <div class="file-upload" id="signUpload" onclick="document.getElementById('signFile').click()">
+                        <input type="file" id="signFile" accept="image/png,image/jpeg" onchange="app.handleSignUpload(event)">
+                        <div class="upload-icon">▲</div>
+                        <div class="upload-text">Click to upload signature</div>
+                        <div class="upload-status" id="signStatus"></div>
+                    </div>
+
+                    <div class="status-message" id="signStatusMsg"></div>
+
+                    <div class="button-group full">
+                        <button class="secondary" onclick="app.goToStep3()">Back</button>
+                        <button id="acceptBtn" disabled onclick="app.acceptAndGenerate()">Complete Onboarding</button>
+                    </div>
+                </div>
+
+                <div class="pdf-viewer">
+                    <div class="pdf-canvas-wrapper" id="pdfCanvasContainerSign" style="display:none;">
+                        <div class="canvas-wrapper" id="canvasWrapperSign">
+                            <canvas id="pdfCanvasSign"></canvas>
+                        </div>
+                    </div>
+                    <div class="pdf-controls" id="pdfControlsSign" style="display:none;">
+                        <div class="page-info" id="pageInfoSign"></div>
+                        <div class="control-buttons">
+                            <button class="secondary" onclick="app.changePage(-1, 'sign')" id="prevBtnSign">Previous</button>
+                            <button class="secondary" onclick="app.changePage(1, 'sign')" id="nextBtnSign">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loader -->
+        <div class="loader" id="loader">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Processing your onboarding package...</div>
+        </div>
+
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+            <h2>Welcome to SS40 Network</h2>
+            
+            <div class="welcome-message">
+                Congratulations on successfully completing your onboarding process. Your profile package has been generated and is ready for download. Please save the ZIP file and send it to ss40network@gmail.com along with your details for final processing.
+            </div>
+
+            <div class="welcome-status">
+                Your onboarding package includes your signed NDA, profile photo, signature, and employee details. Thank you for joining our team.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            alert("Please use a desktop or laptop for this application.");
+            document.body.innerHTML = '<div style="text-align:center; padding:40px; font-family: inherit; color:#f5f5f5;">Please use a desktop or laptop for this application.</div>';
+            throw new Error('Mobile not supported');
+        }
+
+        class EmployeeOnboarding {
+            constructor() {
+                this.RENDER_SCALE = 1.5;
+                this.employeeData = {
+                    name: '',
+                    dob: '',
+                    email: '',
+                    mobile: '',
+                    username: ''
+                };
+                this.ndaData = null;
+                this.pdfDoc = null;
+                this.currentPage = 1;
+                this.currentPagePhoto = 1;
+                this.currentPageSign = 1;
+                this.totalPages = 0;
+                this.photoData = null;
+                this.signData = null;
+                this.photoPlacement = null;
+                this.signPlacements = [];
+                this.draggingElement = null;
+                this.dragStartX = 0;
+                this.dragStartY = 0;
+                this.dragMode = null;
+                this.dragType = null;
+                this.dragIndex = 0;
+                this.activeMode = null;
+                this.scaleFactors = {};
+                
+                this.setupEventListeners();
+                this.updateProgress();
+            }
+
+            setupEventListeners() {
+                document.addEventListener('mousemove', (e) => this.onMouseMove(e));
+                document.addEventListener('mouseup', () => this.onMouseUp());
+            }
+
+            updateProgress() {
+                let completed = 0;
+                if (this.employeeData.name && this.employeeData.dob && this.employeeData.email && this.employeeData.mobile) completed++;
+                if (this.ndaData) completed++;
+                if (this.photoPlacement) completed++;
+                if (this.signPlacements.length > 0) completed++;
+                
+                const percent = Math.round((completed / 4) * 100);
+                document.getElementById('progressFill').style.width = percent + '%';
+                document.getElementById('progressPercent').textContent = percent;
+            }
+
+            goToStep1() {
+                this.showStep(1);
+            }
+
+            goToStep2() {
+                const name = document.getElementById('employeeName').value.trim();
+                const dob = document.getElementById('employeeDob').value;
+                const email = document.getElementById('employeeEmail').value.trim();
+                const mobile = document.getElementById('employeeMobile').value.trim();
+
+                if (!name || !dob || !email || !mobile) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+
+                this.employeeData.name = name;
+                this.employeeData.dob = dob;
+                this.employeeData.email = email;
+                this.employeeData.mobile = mobile;
+                this.employeeData.username = name.substring(0, 4).toUpperCase();
+                
+                this.updateProgress();
+                this.showStep(2);
+                if (this.pdfDoc) {
+                    setTimeout(() => this.renderPage('main'), 100);
+                }
+            }
+
+            async goToStep3() {
+                this.showStep(3);
+                setTimeout(async () => {
+                    if (!document.getElementById('pdfCanvasPhoto').dataset.initialized) {
+                        this.currentPagePhoto = 1;
+                    }
+                    await this.renderPage('photo');
+                }, 100);
+            }
+
+            async goToStep4() {
+                this.showStep(4);
+                setTimeout(async () => {
+                    if (!document.getElementById('pdfCanvasSign').dataset.initialized) {
+                        this.currentPageSign = 1;
+                    }
+                    await this.renderPage('sign');
+                }, 100);
+            }
+
+            showStep(stepNumber) {
+                document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+                if (stepNumber > 0) {
+                    document.getElementById(`step${stepNumber}`).classList.add('active');
+                }
+            }
+
+            async handleNdaUpload(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                try {
+                    this.ndaData = await this.loadPDF(file);
+                    
+                    const header = String.fromCharCode(...this.ndaData.slice(0, 5));
+                    if (header !== '%PDF-') {
+                        throw new Error('Invalid PDF file');
+                    }
+
+                    const viewData = new Uint8Array(this.ndaData);
+                    const loadingTask = pdfjsLib.getDocument({data: viewData});
+                    this.pdfDoc = await loadingTask.promise;
+                    this.totalPages = this.pdfDoc.numPages;
+                    this.currentPage = 1;
+
+                    await this.renderPage('main');
+
+                    document.getElementById('ndaUpload').classList.add('active');
+                    document.getElementById('ndaStatus').textContent = `Loaded: ${this.totalPages} pages`;
+                    
+                    const msg = document.getElementById('ndaStatusMsg');
+                    msg.textContent = 'NDA document loaded successfully';
+                    msg.className = 'status-message success';
+                    msg.style.display = 'block';
+                    
+                    document.getElementById('pdfCanvasContainer').style.display = 'block';
+                    document.getElementById('pdfControls').style.display = 'flex';
+                    document.getElementById('continueToPhoto').disabled = false;
+                    
+                    this.updateProgress();
+                } catch (err) {
+                    const msg = document.getElementById('ndaStatusMsg');
+                    msg.textContent = 'Error: ' + err.message;
+                    msg.className = 'status-message error';
+                    msg.style.display = 'block';
+                }
+            }
+
+            loadPDF(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        resolve(new Uint8Array(e.target.result));
+                    };
+                    reader.onerror = () => reject(new Error('Failed to read PDF'));
+                    reader.readAsArrayBuffer(file);
+                });
+            }
+
+            async renderPage(mode = 'main') {
+                if (!this.pdfDoc) return;
+
+                let pageNum, canvasId, wrapperId, containerId;
+                
+                if (mode === 'photo') {
+                    pageNum = this.currentPagePhoto;
+                    canvasId = 'pdfCanvasPhoto';
+                    wrapperId = 'canvasWrapperPhoto';
+                    containerId = 'pdfCanvasContainerPhoto';
+                } else if (mode === 'sign') {
+                    pageNum = this.currentPageSign;
+                    canvasId = 'pdfCanvasSign';
+                    wrapperId = 'canvasWrapperSign';
+                    containerId = 'pdfCanvasContainerSign';
+                } else {
+                    pageNum = this.currentPage;
+                    canvasId = 'pdfCanvas';
+                    wrapperId = 'canvasWrapper';
+                    containerId = 'pdfCanvasContainer';
+                }
+
+                try {
+                    const page = await this.pdfDoc.getPage(pageNum);
+                    const viewport = page.getViewport({scale: this.RENDER_SCALE});
+                    const canvas = document.getElementById(canvasId);
+                    
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    
+                    const maxWidth = 350;
+                    const displayScale = Math.min(1, maxWidth / viewport.width);
+                    canvas.style.width = (viewport.width * displayScale) + 'px';
+                    canvas.style.height = (viewport.height * displayScale) + 'px';
+                    
+                    this.scaleFactors[mode] = displayScale;
+                    
+                    const ctx = canvas.getContext('2d');
+                    await page.render({
+                        canvasContext: ctx,
+                        viewport: viewport
+                    }).promise;
+
+                    canvas.dataset.initialized = 'true';
+                    
+                    this.setupCanvasClickListener(canvas, mode);
+                    this.renderIndicators(mode);
+                    this.updatePageInfo(mode);
+
+                } catch (err) {
+                    console.error('Render error:', err);
+                }
+            }
+
+            setupCanvasClickListener(canvas, mode) {
+                canvas.onclick = (e) => this.handleCanvasClick(e, mode);
+            }
+
+            handleCanvasClick(e, mode) {
+                e.preventDefault();
+                const canvas = e.target;
+                const rect = canvas.getBoundingClientRect();
+                
+                const displayScale = this.scaleFactors[mode];
+                const displayX = e.clientX - rect.left;
+                const displayY = e.clientY - rect.top;
+                const internalX = displayX / displayScale;
+                const internalY = displayY / displayScale;
+                const pdfX = internalX / this.RENDER_SCALE;
+                const pdfY = internalY / this.RENDER_SCALE;  // y from top
+
+                let pageNum = mode === 'photo' ? this.currentPagePhoto : (mode === 'sign' ? this.currentPageSign : this.currentPage);
+
+                if (this.photoData && !this.photoPlacement && mode === 'photo') {
+                    this.photoPlacement = {
+                        x: pdfX,
+                        y: pdfY,
+                        page: pageNum,
+                        width: 100,
+                        height: 100
+                    };
+                    
+                    this.renderIndicators(mode);
+                    const msg = document.getElementById('photoStatusMsg');
+                    msg.textContent = `Photo placed on page ${pageNum}. Drag to reposition.`;
+                    msg.className = 'status-message success';
+                    msg.style.display = 'block';
+
+                    document.getElementById('continueToSign').disabled = false;
+                    
+                    this.updateProgress();
+                } else if (this.signData && mode === 'sign') {
+                    this.signPlacements.push({
+                        x: pdfX,
+                        y: pdfY,
+                        page: pageNum,
+                        width: 120,
+                        height: 50
+                    });
+                    
+                    this.renderIndicators(mode);
+                    const msg = document.getElementById('signStatusMsg');
+                    msg.textContent = `Signature ${this.signPlacements.length} placed on page ${pageNum}. Drag to reposition.`;
+                    msg.className = 'status-message success';
+                    msg.style.display = 'block';
+
+                    if (this.signPlacements.length === 1) {
+                        document.getElementById('acceptBtn').disabled = false;
+                    }
+                    
+                    this.updateProgress();
+                }
+            }
+
+            renderIndicators(mode = 'main') {
+                let wrapperId, canvasId;
+                
+                if (mode === 'photo') {
+                    wrapperId = 'canvasWrapperPhoto';
+                    canvasId = 'pdfCanvasPhoto';
+                } else if (mode === 'sign') {
+                    wrapperId = 'canvasWrapperSign';
+                    canvasId = 'pdfCanvasSign';
+                } else {
+                    wrapperId = 'canvasWrapper';
+                    canvasId = 'pdfCanvas';
+                }
+
+                const wrapper = document.getElementById(wrapperId);
+                wrapper.querySelectorAll('.indicator').forEach(el => el.remove());
+
+                const displayScale = this.scaleFactors[mode] || 1;
+                const totalScale = this.RENDER_SCALE * displayScale;
+                let pageNum = mode === 'photo' ? this.currentPagePhoto : (mode === 'sign' ? this.currentPageSign : this.currentPage);
+
+                if (this.photoPlacement && this.photoPlacement.page === pageNum) {
+                    const ind = document.createElement('div');
+                    ind.className = 'indicator';
+                    ind.textContent = 'PHOTO';
+                    ind.style.left = (this.photoPlacement.x * totalScale) + 'px';
+                    ind.style.top = (this.photoPlacement.y * totalScale) + 'px';
+                    ind.style.width = (this.photoPlacement.width * totalScale) + 'px';
+                    ind.style.height = (this.photoPlacement.height * totalScale) + 'px';
+                    ind.dataset.type = 'photo';
+                    ind.addEventListener('mousedown', (e) => this.onMouseDown(e, 'photo', mode));
+                    wrapper.appendChild(ind);
+                }
+
+                this.signPlacements.forEach((placement, idx) => {
+                    if (placement.page === pageNum) {
+                        const ind = document.createElement('div');
+                        ind.className = 'indicator';
+                        ind.textContent = 'SIGNATURE';
+                        ind.style.left = (placement.x * totalScale) + 'px';
+                        ind.style.top = (placement.y * totalScale) + 'px';
+                        ind.style.width = (placement.width * totalScale) + 'px';
+                        ind.style.height = (placement.height * totalScale) + 'px';
+                        ind.dataset.type = 'sign';
+                        ind.dataset.index = idx;
+                        ind.addEventListener('mousedown', (e) => this.onMouseDown(e, 'sign', mode, idx));
+                        wrapper.appendChild(ind);
+                    }
+                });
+            }
+
+            onMouseDown(e, type, mode, index = 0) {
+                e.preventDefault();
+                this.draggingElement = e.target;
+                this.dragMode = mode;
+                this.dragType = type;
+                this.dragIndex = index;
+                
+                const rect = this.draggingElement.getBoundingClientRect();
+                this.dragStartX = e.clientX - rect.left;
+                this.dragStartY = e.clientY - rect.top;
+            }
+
+            onMouseMove(e) {
+                if (!this.draggingElement) return;
+
+                const displayScale = this.scaleFactors[this.dragMode] || 1;
+                const totalScale = this.RENDER_SCALE * displayScale;
+                let canvasId, wrapperId;
+                
+                if (this.dragMode === 'photo') {
+                    canvasId = 'pdfCanvasPhoto';
+                    wrapperId = 'canvasWrapperPhoto';
+                } else if (this.dragMode === 'sign') {
+                    canvasId = 'pdfCanvasSign';
+                    wrapperId = 'canvasWrapperSign';
+                } else {
+                    canvasId = 'pdfCanvas';
+                    wrapperId = 'canvasWrapper';
+                }
+
+                const canvas = document.getElementById(canvasId);
+                const rect = canvas.getBoundingClientRect();
+                
+                let newX = (e.clientX - rect.left) - this.dragStartX;
+                let newY = (e.clientY - rect.top) - this.dragStartY;
+
+                const elemWidth = parseFloat(this.draggingElement.style.width);
+                const elemHeight = parseFloat(this.draggingElement.style.height);
+                const canvasWidth = canvas.offsetWidth;
+                const canvasHeight = canvas.offsetHeight;
+
+                newX = Math.max(0, Math.min(newX, canvasWidth - elemWidth));
+                newY = Math.max(0, Math.min(newY, canvasHeight - elemHeight));
+
+                this.draggingElement.style.left = newX + 'px';
+                this.draggingElement.style.top = newY + 'px';
+
+                const pdfX = newX / totalScale;
+                const pdfY = newY / totalScale;
+
+                if (this.dragType === 'photo' && this.photoPlacement) {
+                    this.photoPlacement.x = pdfX;
+                    this.photoPlacement.y = pdfY;
+                } else if (this.dragType === 'sign' && this.signPlacements[this.dragIndex]) {
+                    this.signPlacements[this.dragIndex].x = pdfX;
+                    this.signPlacements[this.dragIndex].y = pdfY;
+                }
+            }
+
+            onMouseUp() {
+                this.draggingElement = null;
+                this.dragType = null;
+                this.dragMode = null;
+            }
+
+            updatePageInfo(mode = 'main') {
+                let pageNum, totalPages, pageInfoId, prevBtnId, nextBtnId;
+                
+                if (mode === 'photo') {
+                    pageNum = this.currentPagePhoto;
+                    totalPages = this.totalPages;
+                    pageInfoId = 'pageInfoPhoto';
+                    prevBtnId = 'prevBtnPhoto';
+                    nextBtnId = 'nextBtnPhoto';
+                } else if (mode === 'sign') {
+                    pageNum = this.currentPageSign;
+                    totalPages = this.totalPages;
+                    pageInfoId = 'pageInfoSign';
+                    prevBtnId = 'prevBtnSign';
+                    nextBtnId = 'nextBtnSign';
+                } else {
+                    pageNum = this.currentPage;
+                    totalPages = this.totalPages;
+                    pageInfoId = 'pageInfo';
+                    prevBtnId = 'prevBtn';
+                    nextBtnId = 'nextBtn';
+                }
+
+                document.getElementById(pageInfoId).textContent = `Page ${pageNum} of ${totalPages}`;
+                document.getElementById(prevBtnId).disabled = pageNum === 1;
+                document.getElementById(nextBtnId).disabled = pageNum === totalPages;
+            }
+
+            changePage(delta, mode = null) {
+                if (mode === 'photo') {
+                    const newPage = this.currentPagePhoto + delta;
+                    if (newPage >= 1 && newPage <= this.totalPages) {
+                        this.currentPagePhoto = newPage;
+                        this.renderPage('photo');
+                    }
+                } else if (mode === 'sign') {
+                    const newPage = this.currentPageSign + delta;
+                    if (newPage >= 1 && newPage <= this.totalPages) {
+                        this.currentPageSign = newPage;
+                        this.renderPage('sign');
+                    }
+                } else {
+                    const newPage = this.currentPage + delta;
+                    if (newPage >= 1 && newPage <= this.totalPages) {
+                        this.currentPage = newPage;
+                        this.renderPage('main');
+                    }
+                }
+            }
+
+            async handlePhotoUpload(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                try {
+                    this.photoData = await this.loadImage(file);
+                    
+                    document.getElementById('photoUpload').classList.add('active');
+                    document.getElementById('photoStatus').textContent = 'Photo uploaded';
+                    
+                    const msg = document.getElementById('photoStatusMsg');
+                    msg.textContent = 'Click on the PDF to place your photo, then drag to adjust position';
+                    msg.className = 'status-message success';
+                    msg.style.display = 'block';
+
+                    document.getElementById('pdfCanvasContainerPhoto').style.display = 'block';
+                    document.getElementById('pdfControlsPhoto').style.display = 'flex';
+                    
+                    if (!document.getElementById('pdfCanvasPhoto').dataset.initialized) {
+                        this.currentPagePhoto = 1;
+                        await this.renderPage('photo');
+                    } else {
+                        this.renderIndicators('photo');
+                    }
+                    
+                    this.updateProgress();
+                } catch (err) {
+                    const msg = document.getElementById('photoStatusMsg');
+                    msg.textContent = 'Error: ' + err.message;
+                    msg.className = 'status-message error';
+                    msg.style.display = 'block';
+                }
+            }
+
+            async handleSignUpload(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                try {
+                    this.signData = await this.loadImage(file);
+                    
+                    document.getElementById('signUpload').classList.add('active');
+                    document.getElementById('signStatus').textContent = 'Signature uploaded';
+                    
+                    const msg = document.getElementById('signStatusMsg');
+                    msg.textContent = 'Click on the PDF multiple times to place signatures, drag to adjust positions';
+                    msg.className = 'status-message success';
+                    msg.style.display = 'block';
+
+                    document.getElementById('pdfCanvasContainerSign').style.display = 'block';
+                    document.getElementById('pdfControlsSign').style.display = 'flex';
+                    
+                    if (!document.getElementById('pdfCanvasSign').dataset.initialized) {
+                        this.currentPageSign = 1;
+                        await this.renderPage('sign');
+                    } else {
+                        this.renderIndicators('sign');
+                    }
+                    
+                    // Disabled until first placement
+                    this.updateProgress();
+                } catch (err) {
+                    const msg = document.getElementById('signStatusMsg');
+                    msg.textContent = 'Error: ' + err.message;
+                    msg.className = 'status-message error';
+                    msg.style.display = 'block';
+                }
+            }
+
+            loadImage(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            resolve({
+                                dataUrl: e.target.result,
+                                image: img,
+                                type: file.type
+                            });
+                        };
+                        img.onerror = () => reject(new Error('Failed to load image'));
+                        img.src = e.target.result;
+                    };
+                    reader.onerror = () => reject(new Error('Failed to read file'));
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            async acceptAndGenerate() {
+                if (!this.photoPlacement || this.signPlacements.length === 0) {
+                    alert('Please place photo and at least one signature on the NDA');
+                    return;
+                }
+
+                try {
+                    document.getElementById('loader').classList.add('active');
+                    this.showStep(0);
+
+                    const signedPdfBytes = await this.generateSignedPDF();
+                    const zip = new JSZip();
+                    
+                    zip.file('signed_nda.pdf', signedPdfBytes);
+                    zip.file('profile_photo.' + this.getFileExtension(this.photoData.type), 
+                             await this.dataUrlToBlob(this.photoData.dataUrl));
+                    zip.file('signature.' + this.getFileExtension(this.signData.type), 
+                             await this.dataUrlToBlob(this.signData.dataUrl));
+                    
+                    const detailsText = this.generateDetailsText();
+                    zip.file('employee_details.txt', detailsText);
+                    
+                    const zipBlob = await zip.generateAsync({type: 'blob'});
+                    const filename = `${this.employeeData.username}_onboarding.zip`;
+                    
+                    this.downloadFile(zipBlob, filename);
+                    
+                    document.getElementById('loader').classList.remove('active');
+                    this.showWelcomeScreen();
+                    
+                } catch (err) {
+                    alert('Error: ' + err.message);
+                    console.error(err);
+                    document.getElementById('loader').classList.remove('active');
+                }
+            }
+
+            async generateSignedPDF() {
+                const pdfDoc = await PDFLib.PDFDocument.load(this.ndaData);
+                const pages = pdfDoc.getPages();
+
+                if (this.photoPlacement) {
+                    const photoBytes = this.dataUrlToUint8Array(this.photoData.dataUrl);
+                    let photoImage;
+                    
+                    if (this.photoData.type.includes('png')) {
+                        photoImage = await pdfDoc.embedPng(photoBytes);
+                    } else {
+                        photoImage = await pdfDoc.embedJpg(photoBytes);
+                    }
+                    
+                    const pageIndex = this.photoPlacement.page - 1;
+                    if (pageIndex >= 0 && pageIndex < pages.length) {
+                        const page = pages[pageIndex];
+                        const pageHeight = page.getHeight();
+                        
+                        page.drawImage(photoImage, {
+                            x: this.photoPlacement.x,
+                            y: pageHeight - this.photoPlacement.y - this.photoPlacement.height,
+                            width: this.photoPlacement.width,
+                            height: this.photoPlacement.height
+                        });
+                    }
+                }
+
+                if (this.signPlacements.length > 0) {
+                    const signBytes = this.dataUrlToUint8Array(this.signData.dataUrl);
+                    let signImage;
+                    
+                    if (this.signData.type.includes('png')) {
+                        signImage = await pdfDoc.embedPng(signBytes);
+                    } else {
+                        signImage = await pdfDoc.embedJpg(signBytes);
+                    }
+                    
+                    this.signPlacements.forEach(placement => {
+                        const pageIndex = placement.page - 1;
+                        if (pageIndex >= 0 && pageIndex < pages.length) {
+                            const page = pages[pageIndex];
+                            const pageHeight = page.getHeight();
+                            
+                            page.drawImage(signImage, {
+                                x: placement.x,
+                                y: pageHeight - placement.y - placement.height,
+                                width: placement.width,
+                                height: placement.height
+                            });
+                        }
+                    });
+                }
+
+                return await pdfDoc.save();
+            }
+
+            dataUrlToUint8Array(dataUrl) {
+                const base64 = dataUrl.split(',')[1];
+                const binaryString = atob(base64);
+                const len = binaryString.length;
+                const bytes = new Uint8Array(len);
+                for (let i = 0; i < len; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                return bytes;
+            }
+
+            async dataUrlToBlob(dataUrl) {
+                const response = await fetch(dataUrl);
+                return await response.blob();
+            }
+
+            getFileExtension(mimeType) {
+                if (mimeType.includes('png')) return 'png';
+                if (mimeType.includes('jpeg') || mimeType.includes('jpg')) return 'jpg';
+                return 'bin';
+            }
+
+            generateDetailsText() {
+                return `SS40 NETWORK - EMPLOYEE ONBOARDING DETAILS
+=====================================
+
+PERSONAL INFORMATION:
+Name: ${this.employeeData.name}
+Date of Birth: ${this.employeeData.dob}
+Email: ${this.employeeData.email}
+Mobile: ${this.employeeData.mobile}
+
+CREDENTIALS:
+Username: ${this.employeeData.username}
+
+ONBOARDING DATE:
+${new Date().toLocaleString()}
+
+=====================================
+Welcome to SS40 Network`;
+            }
+
+            downloadFile(blob, filename) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+
+            showWelcomeScreen() {
+                document.getElementById('welcomeScreen').classList.add('active');
+            }
+        }
+
+        const app = new EmployeeOnboarding();
+    </script>
+</body>
+</html>
